@@ -1,4 +1,7 @@
-import { parseRequestQuery, constructPreparedStatement } from '#root/model/utils.js';
+import {
+  parseRequestQuery,
+  constructPreparedStatement,
+} from '#root/model/utils.js';
 
 const model = {
   table: 'Users',
@@ -13,6 +16,7 @@ const model = {
     'UserLongitude',
     'UserTimestamp',
     'UserImageURL',
+    'ExpoPushToken',
   ],
 
   buildReadQuery: (req, variant) => {
@@ -33,11 +37,11 @@ const model = {
         ];
         table = `Contacts INNER JOIN ${table} ON ContactContactID=Users.UserID`;
         where = 'ContactUserID=:ID';
-        parameters = { ID: parseInt(req.params.id) };
+        parameters = {ID: parseInt(req.params.id)};
         break;
       case 'primary':
         where = 'UserID=:ID';
-        parameters = { ID: parseInt(req.params.id) };
+        parameters = {ID: parseInt(req.params.id)};
         break;
     }
 
@@ -45,7 +49,14 @@ const model = {
     const allowedQueryFields = [...model.mutableFields, 'UserContactLabel'];
     const [filter, orderby] = parseRequestQuery(req, allowedQueryFields);
 
-    return constructPreparedStatement(fields, table, where, parameters, filter, orderby);
+    return constructPreparedStatement(
+      fields,
+      table,
+      where,
+      parameters,
+      filter,
+      orderby
+    );
   },
 };
 

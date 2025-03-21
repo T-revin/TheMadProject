@@ -1,5 +1,5 @@
 import joi from 'joi';
-import { joiValidGPS } from '#root/validator/utils.js';
+import {joiValidGPS} from '#root/validator/utils.js';
 
 const schema = {};
 
@@ -13,6 +13,7 @@ schema.mutableFields = [
   'UserLongitude',
   'UserTimestamp',
   'UserImageURL',
+  'ExpoPushToken',
 ];
 
 schema.record = joi
@@ -27,6 +28,7 @@ schema.record = joi
     UserLongitude: joiValidGPS.longitude,
     UserTimestamp: joiValidGPS.timestamp,
     UserImageURL: joi.string().uri(),
+    ExpoPushToken: joi.string().min(12),
   })
   .required()
   .unknown(true);

@@ -1,6 +1,6 @@
 export const parseRequestQuery = (req, allowedFields) => {
   let ordering = null;
-  let filter = { sql: '', parameters: {} };
+  let filter = {sql: '', parameters: {}};
   for (const key in req.query)
     switch (true) {
       case allowedFields.includes(key):
@@ -21,7 +21,14 @@ export const parseRequestQuery = (req, allowedFields) => {
   return [filter.sql.length === 0 ? null : filter, ordering];
 };
 
-export const constructPreparedStatement = (fields, table, where, parameters, filter, orderby) => {
+export const constructPreparedStatement = (
+  fields,
+  table,
+  where,
+  parameters,
+  filter,
+  orderby
+) => {
   where = `${where ? `WHERE ${where}` : ''}`;
   orderby = `${orderby ? `ORDER BY ${orderby}` : ''}`;
   let sql = `SELECT ${fields} FROM ${table} ${where} ${orderby}`;
@@ -31,8 +38,5 @@ export const constructPreparedStatement = (fields, table, where, parameters, fil
     parameters = Object.assign(parameters, filter.parameters);
   }
 
-  // console.log(`SQL=[${sql}]`);
-  // console.log(`Parameters=[${JSON.stringify(parameters)}]`);
-
-  return { sql, parameters };
+  return {sql, parameters};
 };
